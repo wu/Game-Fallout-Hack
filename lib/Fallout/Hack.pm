@@ -22,6 +22,10 @@ sub calculate_match_count {
 
     my $count_matched = 0;
 
+    unless ( length $word1 eq length $word2 ) {
+        die "ERROR: calculate_match_count called with different length strings: '$word1' vs '$word2'";
+    }
+
     for my $idx ( 0 .. length( $word1 ) - 1 ) {
         if ( substr( $word1, $idx, 1 ) eq substr( $word2, $idx, 1 ) ) {
             $count_matched++;
@@ -70,7 +74,7 @@ sub score_words {
 
             # add the rank of this letter in this substring index to the
             # total score of this word
-            $scores->{$word} += $indexes->{$human_idx}->{$char};
+            $scores->{$word} += $indexes->{$human_idx}->{$char} * $indexes->{$human_idx}->{$char};
         }
     }
 
@@ -84,13 +88,20 @@ sub recommend_guess {
 
     print "RECOMMENDING GUESS # $count\n";
 
+    if ( scalar @words == 1 ) {
+        die "ERROR: asked to recommend guess, but only given one word!";
+    }
+
     if ( $count == 1 ) {
-        $guess = recommend_guess_lowest_score( @words );
+        $guess = recommend_guess_middle_score( @words );
     }
     elsif ( $count == 2 ) {
         $guess = recommend_guess_highest_score( @words );
     }
     elsif ( $count == 3 ) {
+        $guess = recommend_guess_highest_score( @words );
+    }
+    elsif ( $count == 4 ) {
         $guess = recommend_guess_highest_score( @words );
     }
     else {
@@ -133,7 +144,7 @@ sub recommend_guess_lowest_score {
 
     my $scores = score_words( @words );
 
-    my $highest_num = 99;
+    my $highest_num = 9999999;
     my $highest_name;
 
     for my $name ( sort keys %{ $scores } ) {
@@ -152,7 +163,13 @@ sub recommend_guess_middle_score {
 
     my $word_scores = score_words( @words );
 
-    my $score_words = { reverse %{ $word_scores } };
+    my $score_words;
+    my $max_score = 0;
+    for my $word ( sort keys %{ $word_scores } ) {
+        $score_words->{ $word_scores->{$word} } = $word;
+
+        if ( $word_scores->{$word} > $max_score ) { $max_score = $word_scores->{$word} }
+    }
 
     my $sum;
     for my $word ( sort keys %{ $word_scores } ) {
@@ -162,12 +179,20 @@ sub recommend_guess_middle_score {
     # start with the average
     my $guess = int( $sum / (scalar @words) );
 
+    # go slightly above the average, better scores so far
+    $guess += 1;
+
+    print "SUM:$sum GUESS ID: $guess\n";
+
     my $name;
-    for ( $guess .. 50 ) {
-        if ( $score_words->{ $guess } ) {
-            return $score_words->{ $guess };
+    for my $guess_id ( $guess .. $max_score ) {
+        if ( $score_words->{ $guess_id } ) {
+            return $score_words->{ $guess_id };
         }
     }
+
+    die "ERROR: unable to get word with middle score";
+
 }
 
 1;

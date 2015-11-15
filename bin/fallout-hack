@@ -1,0 +1,38 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+use YAML;
+use lib "lib/";
+use Fallout::Hack;
+
+print "Enter words, one per line\n";
+
+my @words;
+
+while ( my $line = <STDIN> ) {
+    chomp $line;
+    $line =~ s|\s+.*$||;
+    next unless $line;
+    last if $line eq ".";
+    push @words, $line;
+}
+
+for my $guess ( 1, 2, 3, 4 ) {
+
+    print YAML::Dump Fallout::Hack::score_words( @words );
+
+    my $recommended = Fallout::Hack::recommend_guess( $guess, @words );
+
+    print "\nRecommended: $recommended\n";
+
+    my $results = <STDIN>;
+    chomp $results;
+    unless ( $results =~ m|^(\w+)\s+(\d)$| ) {
+        die "ERROR: could not match\n";
+    }
+
+    @words = Fallout::Hack::guess( \@words, $1, $2 );
+
+}
+
