@@ -86,10 +86,6 @@ sub recommend_guess {
 
     #print "RECOMMENDING GUESS # $count\n";
 
-    if ( scalar @words == 1 ) {
-        die "ERROR: asked to recommend guess, but only given one word!";
-    }
-
     if ( $count == 1 ) {
         $guess = recommend_guess_middle_score( @words );
     }
@@ -97,10 +93,10 @@ sub recommend_guess {
         $guess = recommend_guess_middle_score( @words );
     }
     elsif ( $count == 3 ) {
-        $guess = recommend_guess_highest_score( @words );
+        $guess = recommend_guess_middle_score( @words );
     }
     elsif ( $count == 4 ) {
-        $guess = recommend_guess_highest_score( @words );
+        $guess = recommend_guess_middle_score( @words );
     }
     else {
         die "No count specified?"
@@ -180,7 +176,7 @@ sub recommend_guess_middle_score {
     my $average = int( $sum / (scalar @words) );
 
     # go slightly above the average, better scores so far
-    my $guess = $average + 1;
+    my $guess = $average;
 
     print "SUM:$sum GUESS ID: $guess\n";
 
