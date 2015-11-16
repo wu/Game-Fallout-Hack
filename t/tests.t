@@ -139,11 +139,48 @@ my @tests = (
             pots => 9,
         }
     },
+    {
+        answer => 'spokes',
+        words => {
+            across => 28,
+            devoid => 28,
+            handle => 45,
+            herald => 36,
+            jacket => 62,
+            marked => 81,
+            movies => 44,
+            random => 44,
+            rather => 62,
+            refuse => 28,
+            spokes => 46,
+        }
+    },
+    {
+        answer => 'silks',
+        words => {
+            allow => 1,
+            silks => 1,
+            rolls => 1,
+            comes => 1,
+            wires => 1,
+            sever => 1,
+            haven => 1,
+            again => 1,
+            clear => 1,
+            paper => 1,
+            pulls => 1,
+        }
+    },
 );
 
 my $total_guesses = 0;
+my $test_number   = 0;
 
 for my $test ( @tests ) {
+
+    $test_number++;
+    print ">"x77, "\n";
+    print "TEST NUMBER $test_number\n";
 
     my %words = %{ $test->{words} };
     my $answer = $test->{answer};
