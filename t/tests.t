@@ -186,7 +186,22 @@ my @tests = (
             country => 1,
             dwindle => 1,
         }
-
+    },
+    {
+        answer => 'gift',
+        words => {
+            gift => 20,
+            iron => 15,
+            last => 15,
+            lots => 15,
+            mood => 20,
+            nice => 18,
+            none => 18,
+            oily => 12,
+            seat => 20,
+            shop => 20,
+            spin => 15,
+        }
     },
 );
 
@@ -214,13 +229,18 @@ for my $test ( @tests ) {
   COUNT:
     for ( 1 .. 4 ) {
         $count = $_;
+        $total_guesses++;
 
         my $recommended;
         ok( $recommended = Fallout::Hack::recommend_guess( $count, @test_words ),
             "Getting a recommended guess: $recommended"
         );
 
-        $total_guesses++;
+        if ( $recommended eq $answer ) {
+            print "Correct guess: $answer\n";
+            @test_words = ( $recommended );
+            last COUNT;
+        }
 
         my $match_count = Fallout::Hack::calculate_match_count( $recommended,
                                                                 $answer,
@@ -232,13 +252,6 @@ for my $test ( @tests ) {
         );
 
         @test_words = @new_test_words;
-
-        if ( scalar @test_words == 1 ) {
-            $total_guesses++;
-            $count++;
-            print "FINAL GUESS #$count = ", @test_words, "\n";
-            last COUNT;
-        }
     }
 
     is_deeply( [ @test_words ],
