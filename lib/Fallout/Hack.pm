@@ -59,9 +59,8 @@ sub score_words {
     for my $word ( @words ) {
         for my $idx ( 0 .. length( $word ) - 1 ) {
             my $char = substr( $word, $idx, 1 );
-            my $human_idx = $idx + 1;
-            $indexes->{$human_idx}->{$char}++;
-            $matches->{$human_idx}->{$char}->{$word}++;
+            $indexes->{$idx}->{$char}++;
+            $matches->{$idx}->{$char}->{$word}++;
         }
     }
 
@@ -70,11 +69,10 @@ sub score_words {
 
         for my $idx ( 0 .. length( $word ) - 1 ) {
             my $char = substr( $word, $idx, 1 );
-            my $human_idx = $idx + 1;
 
             # add the rank of this letter in this substring index to the
             # total score of this word
-            $scores->{$word} += $indexes->{$human_idx}->{$char} * $indexes->{$human_idx}->{$char};
+            $scores->{$word} += $indexes->{$idx}->{$char} * $indexes->{$idx}->{$char};
         }
     }
 
@@ -86,7 +84,7 @@ sub recommend_guess {
 
     my $guess;
 
-    print "RECOMMENDING GUESS # $count\n";
+    #print "RECOMMENDING GUESS # $count\n";
 
     if ( scalar @words == 1 ) {
         die "ERROR: asked to recommend guess, but only given one word!";
@@ -96,7 +94,7 @@ sub recommend_guess {
         $guess = recommend_guess_middle_score( @words );
     }
     elsif ( $count == 2 ) {
-        $guess = recommend_guess_highest_score( @words );
+        $guess = recommend_guess_middle_score( @words );
     }
     elsif ( $count == 3 ) {
         $guess = recommend_guess_highest_score( @words );
@@ -107,6 +105,8 @@ sub recommend_guess {
     else {
         die "No count specified?"
     };
+
+    print "RECOMMENDING GUESS # $count => $guess\n";
 
     return $guess;
 }
@@ -144,7 +144,7 @@ sub recommend_guess_lowest_score {
 
     my $scores = score_words( @words );
 
-    my $highest_num = 9999999;
+    my $highest_num = $scores->{ $words[0] };
     my $highest_name;
 
     for my $name ( sort keys %{ $scores } ) {
