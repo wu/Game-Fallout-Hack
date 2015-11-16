@@ -171,6 +171,23 @@ my @tests = (
             pulls => 1,
         }
     },
+    {
+        answer => 'because',
+        words => {
+            cleared => 1,
+            allowed => 1,
+            thieves => 1,
+            because => 1,
+            greeted => 1,
+            between => 1,
+            stained => 1,
+            watched => 1,
+            streets => 1,
+            country => 1,
+            dwindle => 1,
+        }
+
+    },
 );
 
 my $total_guesses = 0;
