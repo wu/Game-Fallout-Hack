@@ -18,6 +18,17 @@ while ( my $line = <STDIN> ) {
     push @words, $line;
 }
 
+unless ( scalar @words == 11 ) {
+    die "ERROR: you don't appear to have entered the right number of words (should be 11)";
+}
+
+my $length = length $words[0];
+for my $word ( @words ) {
+    unless ( length $word == $length ) {
+        die "ERROR: not all words are the same length, e.g. '$words[0]' vs '$word'"
+    }
+}
+
 for my $guess ( 1, 2, 3, 4 ) {
 
     print YAML::Dump Fallout::Hack::score_words( @words );
