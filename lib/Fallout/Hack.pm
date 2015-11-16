@@ -177,10 +177,10 @@ sub recommend_guess_middle_score {
     }
 
     # start with the average
-    my $guess = int( $sum / (scalar @words) );
+    my $average = int( $sum / (scalar @words) );
 
     # go slightly above the average, better scores so far
-    $guess += 1;
+    my $guess = $average + 1;
 
     print "SUM:$sum GUESS ID: $guess\n";
 
@@ -189,6 +189,10 @@ sub recommend_guess_middle_score {
         if ( $score_words->{ $guess_id } ) {
             return $score_words->{ $guess_id };
         }
+    }
+
+    if ( $score_words->{ $average } ) {
+        return $score_words->{$average};
     }
 
     die "ERROR: unable to get word with middle score";
