@@ -28,180 +28,64 @@ use Fallout::Hack;
 my @tests = (
     {
         answer => 'silver',
-        words => {
-            fierce => 12,
-            pleads => 13,
-            insane => 13,
-            shiner => 14,
-            wagons => 14,
-            ripped => 14,
-            visage => 15,
-            crimes => 16,
-            silver => 16,
-            tables => 17,
-            wastes => 20,
-        }
+        words => [ qw( fierce pleads insane shiner wagons ripped visage crimes silver tables wastes ) ],
     },
     {
         answer => 'cult',
-        words => {
-            cult => 6,
-            kind => 7,
-            bill => 7,
-            warm => 8,
-            pare => 9,
-            good => 9,
-            loud => 10,
-            labs => 10,
-            furs => 10,
-            pots => 11,
-            boss => 11,
-        },
+        words => [ qw( cult kind bill warm pare good loud labs furs pots boss ) ],
     },
     {
         answer => 'take',
-        words => {
-            self => 5,
-            atop => 6,
-            join => 7,
-            shot => 7,
-            four => 7,
-            once => 7,
-            ways => 7,
-            take => 9,
-            hair => 9,
-            mood => 9,
-            mace => 11,
-        }
+        words => [ qw( self atop join shot four once ways take hair mood mace ) ],
     },
     {
         answer => 'lamp',
-        words => {
-            dens => 5,
-            flat => 8,
-            pays => 9,
-            full => 9,
-            farm => 10,
-            lamp => 10,
-            colt => 11,
-            chip => 11,
-            crap => 11,
-            cain => 13,
-            call => 15,
-        }
+        words => [ qw( dens flat pays full farm lamp colt chip crap cain call ) ],
     },
     {
         answer => 'scene',
-        words => {
-            scene => 10,
-            start => 10,
-            minds => 11,
-            flame => 12,
-            types => 12,
-            while => 12,
-            aware => 12,
-            alien => 12,
-            fails => 13,
-            wires => 15,
-            sizes => 16,
-        },
+        words => [ qw( scene start minds flame types while aware alien fails wires sizes ) ],
 
     },
     {
         answer => 'instore',
-        words => {
-            fanatic => 10,
-            objects => 11,
-            instore => 12,
-            warning => 12,
-            welfare => 13,
-            offense => 13,
-            takings => 13,
-            stunned => 15,
-            becomes => 15,
-            invaded => 15,
-            decried => 16,
-        }
+        words => [ qw( fanatic objects instore warning welfare offense takings stunned becomes invaded decried ) ],
     },
     {
         answer => 'four',
-        words => {
-            ball => 11,
-            call => 13,
-            cape => 12,
-            colt => 12,
-            does => 10,
-            evil => 6,
-            face => 10,
-            four => 9,
-            hope => 11,
-            owed => 5,
-            pots => 9,
-        }
+        words => [ qw( ball call cape colt does evil face four hope owed pots ) ],
     },
     {
         answer => 'spokes',
-        words => {
-            across => 28,
-            devoid => 28,
-            handle => 45,
-            herald => 36,
-            jacket => 62,
-            marked => 81,
-            movies => 44,
-            random => 44,
-            rather => 62,
-            refuse => 28,
-            spokes => 46,
-        }
+        words => [ qw( across devoid handle herald jacket marked movies random rather refuse spokes ) ],
     },
     {
         answer => 'silks',
-        words => {
-            allow => 1,
-            silks => 1,
-            rolls => 1,
-            comes => 1,
-            wires => 1,
-            sever => 1,
-            haven => 1,
-            again => 1,
-            clear => 1,
-            paper => 1,
-            pulls => 1,
-        }
+        words => [ qw( allow silks rolls comes wires sever haven again clear paper pulls ) ],
     },
     {
         answer => 'because',
-        words => {
-            cleared => 1,
-            allowed => 1,
-            thieves => 1,
-            because => 1,
-            greeted => 1,
-            between => 1,
-            stained => 1,
-            watched => 1,
-            streets => 1,
-            country => 1,
-            dwindle => 1,
-        }
+        words => [ qw( cleared allowed thieves because greeted between stained watched streets country dwindle ) ],
     },
     {
         answer => 'gift',
-        words => {
-            gift => 20,
-            iron => 15,
-            last => 15,
-            lots => 15,
-            mood => 20,
-            nice => 18,
-            none => 18,
-            oily => 12,
-            seat => 20,
-            shop => 20,
-            spin => 15,
-        }
+        words => [ qw( gift iron last lots mood nice none oily seat shop spin ) ],
+    },
+    {
+        answer => 'wants',
+        words => [ qw( spies robes dress wants james posed rates radio ready sells tires ) ],
+    },
+    {
+        answer => 'fall',
+        words => [ qw( pray task raid lamp maul fall cave wave rats pays lays ) ],
+    },
+    {
+        answer => 'speed',
+        words => [ qw( death orbit usual joins broke level scope would speed scent weird ) ],
+    },
+    {
+        answer => 'waves',
+        words => [ qw( butch clock hatch kinds lance peace ranks rubes scant skins waves ) ],
     },
 );
 
@@ -214,20 +98,14 @@ for my $test ( @tests ) {
     print ">"x77, "\n";
     print "TEST NUMBER $test_number\n";
 
-    my %words = %{ $test->{words} };
+    my @words = @{ $test->{words} };
     my $answer = $test->{answer};
-    my @words = keys %words;
-
-    # is_deeply( Fallout::Hack::score_words( @words ),
-    #            \%words,
-    #            "Checking word scores"
-    #        );
 
     my @test_words = ( @words );
 
     my $count;
   COUNT:
-    for ( 1 .. 4 ) {
+    for ( 1 .. 3 ) {
         $count = $_;
         $total_guesses++;
 
@@ -265,6 +143,9 @@ for my $test ( @tests ) {
 
 }
 
-print "\nTOTAL TESTS: $total_guesses\n";
+my $num_tests = scalar @tests;
+my $avg_guesses = $total_guesses / $num_tests;
+
+print "\nGUESSES=$total_guesses TESTS=$num_tests  AVG=$avg_guesses\n";
 
 done_testing;
