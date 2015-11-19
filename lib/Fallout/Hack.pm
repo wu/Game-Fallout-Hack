@@ -72,7 +72,8 @@ sub score_words {
 
             # add the rank of this letter in this substring index to the
             # total score of this word
-            $scores->{$word} += $indexes->{$idx}->{$char} * $indexes->{$idx}->{$char};
+            #$scores->{$word} += $indexes->{$idx}->{$char} * $indexes->{$idx}->{$char};
+            $scores->{$word} += $indexes->{$idx}->{$char};
         }
     }
 
@@ -187,8 +188,10 @@ sub recommend_guess_middle_score {
         }
     }
 
-    if ( $score_words->{ $average } ) {
-        return $score_words->{$average};
+    for my $guess_id ( reverse 0 .. $guess ) {
+        if ( $score_words->{ $guess_id } ) {
+            return $score_words->{ $guess_id };
+        }
     }
 
     die "ERROR: unable to get word with middle score";
