@@ -38,8 +38,7 @@ for my $line ( <DATA> ) {
 
     my $count;
   COUNT:
-    for ( 1 .. 3 ) {
-        $count = $_;
+    for $count ( 1 .. 3 ) {
         $total_guesses++;
 
         my $recommended;
