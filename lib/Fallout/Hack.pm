@@ -72,7 +72,6 @@ sub score_words {
 
             # add the rank of this letter in this substring index to the
             # total score of this word
-            #$scores->{$word} += $indexes->{$idx}->{$char} * $indexes->{$idx}->{$char};
             $scores->{$word} += $indexes->{$idx}->{$char};
         }
     }
@@ -178,8 +177,6 @@ sub recommend_guess_middle_score {
 
     # go slightly above the average, better scores so far
     my $guess = $average;
-
-    print "SUM:$sum GUESS ID: $guess\n";
 
     my $name;
     for my $guess_id ( $guess .. $max_score ) {
