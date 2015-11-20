@@ -36,9 +36,10 @@ for my $line ( <DATA> ) {
     my ( $answer, $words_string ) = split /\:\s+/, $line;
     my @test_words = split /\s+/, $words_string;
 
-    my $count;
+    my $guesses;
   COUNT:
-    for $count ( 1 .. 3 ) {
+    for my $count ( 1 .. 3 ) {
+        $guesses++;
         $total_guesses++;
 
         my $recommended;
@@ -69,7 +70,7 @@ for my $line ( <DATA> ) {
                "Checking that final word was found: $answer"
            );
 
-    ok( $count <= 4,
+    ok( $guesses <= 4,
         "Checking that answer was found by the 4th guess"
     );
 
