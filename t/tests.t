@@ -3,7 +3,6 @@ use strict;
 use warnings;
 
 use Test::More;
-use YAML;
 
 use Fallout::Hack;
 
@@ -25,83 +24,17 @@ use Fallout::Hack;
     );
 }
 
-my @tests = (
-    {
-        answer => 'silver',
-        words => [ qw( fierce pleads insane shiner wagons ripped visage crimes silver tables wastes ) ],
-    },
-    {
-        answer => 'cult',
-        words => [ qw( cult kind bill warm pare good loud labs furs pots boss ) ],
-    },
-    {
-        answer => 'take',
-        words => [ qw( self atop join shot four once ways take hair mood mace ) ],
-    },
-    {
-        answer => 'lamp',
-        words => [ qw( dens flat pays full farm lamp colt chip crap cain call ) ],
-    },
-    {
-        answer => 'scene',
-        words => [ qw( scene start minds flame types while aware alien fails wires sizes ) ],
-
-    },
-    {
-        answer => 'instore',
-        words => [ qw( fanatic objects instore warning welfare offense takings stunned becomes invaded decried ) ],
-    },
-    {
-        answer => 'four',
-        words => [ qw( ball call cape colt does evil face four hope owed pots ) ],
-    },
-    {
-        answer => 'spokes',
-        words => [ qw( across devoid handle herald jacket marked movies random rather refuse spokes ) ],
-    },
-    {
-        answer => 'silks',
-        words => [ qw( allow silks rolls comes wires sever haven again clear paper pulls ) ],
-    },
-    {
-        answer => 'because',
-        words => [ qw( cleared allowed thieves because greeted between stained watched streets country dwindle ) ],
-    },
-    {
-        answer => 'gift',
-        words => [ qw( gift iron last lots mood nice none oily seat shop spin ) ],
-    },
-    {
-        answer => 'wants',
-        words => [ qw( spies robes dress wants james posed rates radio ready sells tires ) ],
-    },
-    {
-        answer => 'fall',
-        words => [ qw( pray task raid lamp maul fall cave wave rats pays lays ) ],
-    },
-    {
-        answer => 'speed',
-        words => [ qw( death orbit usual joins broke level scope would speed scent weird ) ],
-    },
-    {
-        answer => 'waves',
-        words => [ qw( butch clock hatch kinds lance peace ranks rubes scant skins waves ) ],
-    },
-);
-
-my $total_guesses = 0;
 my $test_number   = 0;
+my $total_guesses = 0;
 
-for my $test ( @tests ) {
-
+for my $line ( <DATA> ) {
     $test_number++;
     print ">"x77, "\n";
-    print "TEST NUMBER $test_number\n";
 
-    my @words = @{ $test->{words} };
-    my $answer = $test->{answer};
+    chomp $line;
 
-    my @test_words = ( @words );
+    my ( $answer, $words_string ) = split /\:\s+/, $line;
+    my @test_words = split /\s+/, $words_string;
 
     my $count;
   COUNT:
@@ -141,11 +74,26 @@ for my $test ( @tests ) {
         "Checking that answer was found by the 4th guess"
     );
 
+    my $avg_guesses = $total_guesses / $test_number;
+    print "GUESSES=$total_guesses TESTS=$test_number  AVG=$avg_guesses\n";
 }
 
-my $num_tests = scalar @tests;
-my $avg_guesses = $total_guesses / $num_tests;
-
-print "\nGUESSES=$total_guesses TESTS=$num_tests  AVG=$avg_guesses\n";
 
 done_testing;
+
+__DATA__
+silver: fierce pleads insane shiner wagons ripped visage crimes silver tables wastes
+cult: cult kind bill warm pare good loud labs furs pots boss
+take: self atop join shot four once ways take hair mood mace
+lamp: dens flat pays full farm lamp colt chip crap cain call
+scene: scene start minds flame types while aware alien fails wires sizes
+instore: fanatic objects instore warning welfare offense takings stunned becomes invaded decried
+four: ball call cape colt does evil face four hope owed pots
+spokes: across devoid handle herald jacket marked movies random rather refuse spokes
+silks: allow silks rolls comes wires sever haven again clear paper pulls
+because: cleared allowed thieves because greeted between stained watched streets country dwindle
+gift: gift iron last lots mood nice none oily seat shop spin
+wants: spies robes dress wants james posed rates radio ready sells tires
+fall: pray task raid lamp maul fall cave wave rats pays lays
+speed: death orbit usual joins broke level scope would speed scent weird
+waves: butch clock hatch kinds lance peace ranks rubes scant skins waves
