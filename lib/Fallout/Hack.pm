@@ -82,81 +82,6 @@ sub score_words {
 sub recommend_guess {
     my ( $count, @words ) = @_;
 
-    my $guess;
-
-    #print "RECOMMENDING GUESS # $count\n";
-
-    if ( $count == 1 ) {
-        $guess = recommend_guess_middle_score( @words );
-    }
-    elsif ( $count == 2 ) {
-        $guess = recommend_guess_middle_score( @words );
-    }
-    elsif ( $count == 3 ) {
-        $guess = recommend_guess_middle_score( @words );
-    }
-    elsif ( $count == 4 ) {
-        $guess = recommend_guess_middle_score( @words );
-    }
-    else {
-        die "No count specified?"
-    };
-
-    print "RECOMMENDING GUESS # $count => $guess\n";
-
-    return $guess;
-}
-
-# just pick the first one in alphabetical order
-sub recommend_guess_first {
-    my ( @words ) = @_;
-
-    @words = sort @words;
-
-    return $words[0];
-}
-
-sub recommend_guess_highest_score {
-    my ( @words ) = @_;
-
-    my $scores = score_words( @words );
-
-    my $highest_num = 0;
-    my $highest_name;
-
-    for my $name ( sort keys %{ $scores } ) {
-        #print "NAME:$name SCORE:$scores->{$name}\n";
-        if ( $scores->{ $name } > $highest_num ) {
-            $highest_num = $scores->{ $name };
-            $highest_name = $name;
-        }
-    }
-
-    return $highest_name;
-}
-
-sub recommend_guess_lowest_score {
-    my ( @words ) = @_;
-
-    my $scores = score_words( @words );
-
-    my $highest_num = $scores->{ $words[0] };
-    my $highest_name;
-
-    for my $name ( sort keys %{ $scores } ) {
-        #print "NAME:$name SCORE:$scores->{$name}\n";
-        if ( $scores->{ $name } < $highest_num ) {
-            $highest_num = $scores->{ $name };
-            $highest_name = $name;
-        }
-    }
-
-    return $highest_name;
-}
-
-sub recommend_guess_middle_score {
-    my ( @words ) = @_;
-
     my $word_scores = score_words( @words );
 
     my $score_words;
@@ -172,11 +97,8 @@ sub recommend_guess_middle_score {
         $sum += $word_scores->{$word};
     }
 
-    # start with the average
-    my $average = int( $sum / (scalar @words) );
-
-    # go slightly above the average, better scores so far
-    my $guess = $average;
+    # get the average score
+    my $guess = int( $sum / (scalar @words) );
 
     my $name;
     for my $guess_id ( $guess .. $max_score ) {
@@ -192,7 +114,6 @@ sub recommend_guess_middle_score {
     }
 
     die "ERROR: unable to get word with middle score";
-
 }
 
 1;
