@@ -6,6 +6,14 @@ use Test::More;
 
 use Fallout::Hack;
 
+#############################################################################
+
+# to enable randomly generated test cases, set this to the number of
+# random tests you want to generate
+my $random_tests = 0;
+
+#############################################################################
+
 {
     ok( Fallout::Hack::matches_string( 'a', 'a', 1 ),
         "Checking that string 'a' matches string 'a' in 1 position"
@@ -26,15 +34,41 @@ use Fallout::Hack;
 
 my $test_number   = 0;
 my $total_guesses = 0;
+my $total_failures = 0;
 
 for my $line ( <DATA> ) {
-    $test_number++;
+    chomp $line;
+    my ( $answer, $words_string ) = split /\:\s+/, $line;
+    my @words = split /\s+/, $words_string;
+    run_test( $answer, @words );
+}
+
+if ( $random_tests ) {
+    print "Getting word list...\n";
+    my @all_words = split /\n/, `cat t/5_word_list`;
+    my $num_words = scalar @all_words;
+    print "WORDS: num_words\n";
+
+    for ( 1 .. $random_tests ) {
+
+        my @words;
+        for ( 1 .. 11 ) {
+            my $num = int( rand( $num_words ) );
+            push @words, $all_words[$num];
+        }
+
+        my $answer = $words[ int( rand( 11 ) ) ];
+
+        run_test( $answer, @words );
+    }
+
+}
+
+sub run_test {
+    my ( $answer, @test_words ) = @_;
     print ">"x77, "\n";
 
-    chomp $line;
-
-    my ( $answer, $words_string ) = split /\:\s+/, $line;
-    my @test_words = split /\s+/, $words_string;
+    $test_number++;
 
     my $guesses;
   COUNT:
@@ -68,15 +102,16 @@ for my $line ( <DATA> ) {
     is_deeply( [ @test_words ],
                [ $answer ],
                "Checking that final word was found: $answer"
-           );
+           ) or $total_failures++;
 
     ok( $guesses <= 4,
         "Checking that answer was found by the 4th guess"
     );
 
     my $avg_guesses = $total_guesses / $test_number;
-    print "GUESSES=$total_guesses TESTS=$test_number  AVG=$avg_guesses\n";
+    print "GUESSES=$total_guesses TESTS=$test_number  AVG=$avg_guesses  FAIL=$total_failures\n";
 }
+
 
 
 done_testing;

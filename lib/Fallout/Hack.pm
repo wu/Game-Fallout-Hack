@@ -55,12 +55,10 @@ sub score_words {
     my ( @words ) = @_;
 
     my $indexes;
-    my $matches;
     for my $word ( @words ) {
         for my $idx ( 0 .. length( $word ) - 1 ) {
             my $char = substr( $word, $idx, 1 );
             $indexes->{$idx}->{$char}++;
-            $matches->{$idx}->{$char}->{$word}++;
         }
     }
 
@@ -97,8 +95,7 @@ sub recommend_guess {
         $sum += $word_scores->{$word};
     }
 
-    # get the average score
-    my $guess = int( $sum / (scalar @words) );
+    my $guess = $max_score;
 
     my $name;
     for my $guess_id ( $guess .. $max_score ) {
