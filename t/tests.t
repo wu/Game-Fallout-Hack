@@ -112,8 +112,6 @@ sub run_test {
     print "GUESSES=$total_guesses TESTS=$test_number  AVG=$avg_guesses  FAIL=$total_failures\n";
 }
 
-
-
 done_testing;
 
 __DATA__
@@ -133,3 +131,4 @@ fall: pray task raid lamp maul fall cave wave rats pays lays
 speed: death orbit usual joins broke level scope would speed scent weird
 waves: butch clock hatch kinds lance peace ranks rubes scant skins waves
 trip: hand send dens task trip went says beam cold soap none
+elders: remain armies result almost taurus rescue failed timers report knight elders
