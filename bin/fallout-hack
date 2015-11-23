@@ -2,48 +2,74 @@
 use strict;
 use warnings;
 
-use YAML;
 use lib "lib/";
 use Fallout::Hack;
 
 print "Enter words, one per line\n";
 
-my @words;
+my @orig_words;
 
 while ( my $line = <STDIN> ) {
     chomp $line;
     $line =~ s|\s+.*$||;
     next unless $line;
     last if $line eq ".";
-    push @words, $line;
+    push @orig_words, $line;
 }
 
-unless ( scalar @words == 11 ) {
+unless ( scalar @orig_words == 11 ) {
     die "ERROR: you don't appear to have entered the right number of words (should be 11)";
 }
 
-my $length = length $words[0];
-for my $word ( @words ) {
+my $length = length $orig_words[0];
+for my $word ( @orig_words ) {
     unless ( length $word == $length ) {
-        die "ERROR: not all words are the same length, e.g. '$words[0]' vs '$word'"
+        die "ERROR: not all words are the same length, e.g. '$orig_words[0]' vs '$word'"
     }
 }
 
+my @words = ( @orig_words );
+my $guesses;
+my $answer;
+
+GUESS:
 for my $guess ( 1, 2, 3, 4 ) {
 
-    print YAML::Dump Fallout::Hack::score_words( @words );
+    $guesses = $guess;
+
+    #print YAML::Dump Fallout::Hack::score_words( @words );
 
     my $recommended = Fallout::Hack::recommend_guess( $guess, @words );
 
     print "\nRecommended: $recommended\n";
 
-    my $results = <STDIN>;
-    chomp $results;
-    unless ( $results =~ m|^(\w+)\s+(\d)$| ) {
-        die "ERROR: could not match\n";
+    my $num_letters;
+  RESULTS:
+    while ( 1 ) {
+        my $stdin = <STDIN>;
+        if ( $stdin =~ m|(\d+)| ) {
+            $num_letters = $1;
+            last RESULTS;
+        }
+        elsif ( $stdin =~ m|\!| ) {
+            $answer = $recommended;
+            last GUESS;
+        }
+        warn "ERROR: enter the number of characters matched by $recommended\n";
     }
 
-    @words = Fallout::Hack::guess( \@words, $1, $2 );
+    @words = Fallout::Hack::guess( \@words, $recommended, $num_letters );
+    my $num_words = scalar @words;
 
+    if ( $num_words == 1 ) {
+        $answer = $words[0];
+        $guesses++;
+        print "ANSWER: $answer\n";
+        last GUESS;
+    }
+
+    print "$num_words remaining: ", join( " ", @words ), "\n";
 }
 
+print "\n\nMatched in $guesses guesses\n";
+print "$answer: ", join( " ", @orig_words ), "\n";
