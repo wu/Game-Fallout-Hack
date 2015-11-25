@@ -135,3 +135,6 @@ elders: remain armies result almost taurus rescue failed timers report knight el
 round: above booty round voice large thick taint scarf crude ready shops
 poised: befell utmost slight mongol poised locals ripped single ritual result couple
 sides: range waves owned raids sides stead races raise state owner hired
+dropped: dropped captain routing ceiling packing closest fertile helping caliber founded desired
+past: past lays huts walk camp sash line role last garl dais
+plan: huts hear wear fork very loan feat pack rank plan away food
