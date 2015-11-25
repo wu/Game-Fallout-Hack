@@ -11,10 +11,9 @@ my @orig_words;
 
 while ( my $line = <STDIN> ) {
     chomp $line;
-    $line =~ s|\s+.*$||;
     next unless $line;
-    last if $line eq ".";
-    push @orig_words, $line;
+    push @orig_words, split /\s+/, $line;
+    last if scalar @orig_words >= 11;
 }
 
 unless ( scalar @orig_words == 11 ) {
