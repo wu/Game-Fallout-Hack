@@ -38,6 +38,7 @@ my $total_failures = 0;
 
 for my $line ( <DATA> ) {
     chomp $line;
+    next unless $line;
     my ( $answer, $words_string ) = split /\:\s+/, $line;
     my @words = split /\s+/, $words_string;
     run_test( $answer, @words );
@@ -138,3 +139,6 @@ sides: range waves owned raids sides stead races raise state owner hired
 dropped: dropped captain routing ceiling packing closest fertile helping caliber founded desired
 past: past lays huts walk camp sash line role last garl dais
 plan: huts hear wear fork very loan feat pack rank plan away food
+cast: fuse fork cast rule tall soil felt rank fuel here tarp
+vast: deed read rush sash rats dead also owed vast held sets
+does: very well wars does fork huts fell fear cool term fury
