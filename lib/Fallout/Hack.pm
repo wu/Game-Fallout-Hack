@@ -2,6 +2,8 @@ package Fallout::Hack;
 use strict;
 use warnings;
 
+use Scalar::Util qw(looks_like_number);
+
 sub matches_string {
     my ( $word1, $word2, $num_letters ) = @_;
 
@@ -51,66 +53,93 @@ sub guess {
     return @results;
 }
 
-sub score_words {
-    my ( @words ) = @_;
+sub full_guess_tree {
+    my ( $guess, @words ) = @_;
 
-    my $indexes;
-    for my $word ( @words ) {
-        for my $idx ( 0 .. length( $word ) - 1 ) {
-            my $char = substr( $word, $idx, 1 );
-            $indexes->{$idx}->{$char}++;
+    unless ( looks_like_number( $guess ) ) {
+        die "ERROR: called full_guess_tree, but failed to supply a guess number as the first argument";
+    }
+
+    my %failures;
+
+    # consider all possible answers
+    for my $answer_word ( @words ) {
+
+        # consider all possible choices
+        for my $first_guess_word ( @words ) {
+            next if $first_guess_word eq $answer_word;
+
+            if ( $guess == 4 ) {
+                $failures{$first_guess_word}->{"$first_guess_word"} = $answer_word;
+                next;
+            }
+
+            my $first_match_count = calculate_match_count( $first_guess_word, $answer_word );
+            my @first_remaining_words = guess( \@words,
+                                               $first_guess_word,
+                                               $first_match_count
+                                           );
+            my $first_remaining_words_count = scalar @first_remaining_words;
+
+            for my $second_guess_word ( @first_remaining_words ) {
+                next if $second_guess_word eq $answer_word;
+
+                if ( $guess == 3 ) {
+                    $failures{$first_guess_word}->{"$second_guess_word"} = $answer_word;
+                    next;
+                }
+
+                my $second_match_count = calculate_match_count( $second_guess_word, $answer_word );
+                my @second_remaining_words = guess( \@first_remaining_words,
+                                                    $second_guess_word,
+                                                    $second_match_count
+                                                );
+                my $second_remaining_words_count = scalar @second_remaining_words;
+
+                for my $third_guess_word ( @second_remaining_words ) {
+                    next if $third_guess_word eq $answer_word;
+
+                    if ( $guess == 2 ) {
+                        $failures{$first_guess_word}->{"$second_guess_word.$third_guess_word"} = $answer_word;
+                        next;
+                    }
+
+                    my $third_match_count = calculate_match_count( $third_guess_word, $answer_word );
+                    my @third_remaining_words = guess( \@second_remaining_words,
+                                                        $third_guess_word,
+                                                       $third_match_count
+                                                   );
+                    my $third_remaining_words_count = scalar @third_remaining_words;
+
+                    for my $fourth_guess_word ( @third_remaining_words ) {
+                        next if $fourth_guess_word eq $answer_word;
+
+                        $failures{$first_guess_word}->{"$second_guess_word.$third_guess_word.$fourth_guess_word"} = $answer_word;
+                    }
+                }
+            }
         }
     }
 
-    my $scores;
-    for my $word ( @words ) {
+    my $min_score = 99999;
+    my $min_score_word;
 
-        for my $idx ( 0 .. length( $word ) - 1 ) {
-            my $char = substr( $word, $idx, 1 );
+    for my $word ( sort @words ) {
 
-            # add the rank of this letter in this substring index to the
-            # total score of this word
-            $scores->{$word} += $indexes->{$idx}->{$char};
+        if ( ! exists $failures{$word} ) {
+            print "No failure paths found => $word\n";
+            return $word;
+        }
+
+        my $failure_count = scalar keys %{ $failures{$word} };
+        if ( $failure_count < $min_score ) {
+            $min_score = $failure_count;
+            $min_score_word = $word;
         }
     }
 
-    return $scores;
-}
-
-sub recommend_guess {
-    my ( $count, @words ) = @_;
-
-    my $word_scores = score_words( @words );
-
-    my $score_words;
-    my $max_score = 0;
-    for my $word ( sort keys %{ $word_scores } ) {
-        $score_words->{ $word_scores->{$word} } = $word;
-
-        if ( $word_scores->{$word} > $max_score ) { $max_score = $word_scores->{$word} }
-    }
-
-    my $sum;
-    for my $word ( sort keys %{ $word_scores } ) {
-        $sum += $word_scores->{$word};
-    }
-
-    my $guess = $max_score;
-
-    my $name;
-    for my $guess_id ( $guess .. $max_score ) {
-        if ( $score_words->{ $guess_id } ) {
-            return $score_words->{ $guess_id };
-        }
-    }
-
-    for my $guess_id ( reverse 0 .. $guess ) {
-        if ( $score_words->{ $guess_id } ) {
-            return $score_words->{ $guess_id };
-        }
-    }
-
-    die "ERROR: unable to get word with middle score";
+    print "Least failure paths found = $min_score => $min_score_word\n";
+    return $min_score_word;
 }
 
 1;

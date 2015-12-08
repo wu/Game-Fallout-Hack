@@ -8,6 +8,12 @@ use Fallout::Hack;
 
 #############################################################################
 
+# 7 letter words (previously 200+): GUESSES=25077 TESTS=10033  AVG=2.4994518090302  FAIL=0
+# 6 letter words (previously 300+): GUESSES=25270 TESTS=10033  AVG=2.5186883285159  FAIL=6
+# 5 letter words (previously 500+): GUESSES=25569 TESTS=10033  AVG=2.54848998305592  FAIL=52
+
+#############################################################################
+
 # to enable randomly generated test cases, set this to the number of
 # random tests you want to generate
 my $random_tests = 0;
@@ -68,8 +74,11 @@ if ( $random_tests ) {
 sub run_test {
     my ( $answer, @test_words ) = @_;
     print ">"x77, "\n";
+    print "$answer: ", join( " ", @test_words ), "\n";
 
     $test_number++;
+
+    my @recommended;
 
     my $guesses;
   COUNT:
@@ -77,8 +86,15 @@ sub run_test {
         $guesses++;
         $total_guesses++;
 
-        my $recommended;
-        ok( $recommended = Fallout::Hack::recommend_guess( $count, @test_words ),
+        unless ( @recommended ) {
+            @recommended = Fallout::Hack::full_guess_tree( $count, @test_words );
+        }
+
+        my $recommended = shift @recommended;
+
+        print "Recommended: $recommended\n";
+
+        ok( $recommended,
             "Getting a recommended guess: $recommended"
         );
 
@@ -94,16 +110,16 @@ sub run_test {
 
         my @new_test_words;
         ok( @new_test_words = Fallout::Hack::guess( \@test_words, $recommended, $match_count ),
-            "Plugging the recommended word back into guess: " . scalar @new_test_words . " left"
+            "Plugging the recommended word back into guess: $match_count matches: " . scalar @new_test_words . " left"
         );
 
         @test_words = @new_test_words;
     }
 
-    is_deeply( [ @test_words ],
-               [ $answer ],
-               "Checking that final word was found: $answer"
-           ) or $total_failures++;
+    is( Fallout::Hack::full_guess_tree( 4, @test_words ),
+        $answer,
+        "Checking that final word was found: $answer"
+    ) or $total_failures++;
 
     ok( $guesses <= 4,
         "Checking that answer was found by the 4th guess"
@@ -142,3 +158,17 @@ plan: huts hear wear fork very loan feat pack rank plan away food
 cast: fuse fork cast rule tall soil felt rank fuel here tarp
 vast: deed read rush sash rats dead also owed vast held sets
 does: very well wars does fork huts fell fear cool term fury
+exit: sung stay exit weak spin yeah wish step star mass seen
+hearts: hearts travel blamed paying dapper beaten passes caring healed wealth worked
+ripper: teevee driver thinks shiner temple status ripper common spoils center yields
+vipers: vipers justin mirror wooden hauled bundle street failed misers anyone erupts
+ages: gang ages deep gain none nice lift owns lose seem salt
+befell: shovel minute bowels raider prayer seemed oxygen module single befell debate
+tore: foul four egos tore goes fell join golf core song soul
+seems: aways taunt plush alert loose looks gangs takes seems scene logic
+section: dragons staying hurting parties winning reached captain outcast signals section reading
+godfather: radiation crumbling engineers projector surviving defensive discovery godfather monocolor situation murderous
+same: died hits wars furs fork goes walk used holy same part
+chooses: reduced shelter thrower worried tonight erected strange turrets chooses hundred godlike
+armor: thugs notes cache board truth shady armor games slips speed catch
+retreated: sponsored increased processor violently wastelord clockwork secretive kidnapped delimiter retreated desperate

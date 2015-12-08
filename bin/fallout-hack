@@ -36,9 +36,7 @@ for my $guess ( 1, 2, 3, 4 ) {
 
     $guesses = $guess;
 
-    #print YAML::Dump Fallout::Hack::score_words( @words );
-
-    my $recommended = Fallout::Hack::recommend_guess( $guess, @words );
+    my $recommended = Fallout::Hack::full_guess_tree( $guess, @words );
 
     print "\nRecommended: $recommended\n";
 
