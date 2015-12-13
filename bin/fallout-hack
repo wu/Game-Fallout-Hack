@@ -5,7 +5,8 @@ use warnings;
 use lib "lib/";
 use Game::Fallout::Hack;
 
-print "Enter words, one per line\n";
+print "Enter words, white space delimited.\n";
+print "If necessary, enter a single '.' (period) after the final word.\n";
 
 my @orig_words;
 
@@ -13,11 +14,11 @@ while ( my $line = <STDIN> ) {
     chomp $line;
     next unless $line;
     push @orig_words, split /\s+/, $line;
+    if ( $orig_words[-1] eq "." ) {
+        pop @orig_words;
+        last;
+    }
     last if scalar @orig_words >= 11;
-}
-
-unless ( scalar @orig_words == 11 ) {
-    die "ERROR: you don't appear to have entered the right number of words (should be 11)";
 }
 
 my $length = length $orig_words[0];

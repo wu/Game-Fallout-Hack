@@ -28,12 +28,13 @@ Game::Fallout::Hack - terminal hacking for Fallout game series
 
 The recent titles in the Fallout game series contains terminals that
 must be 'hacked' in order to gain access.  The 'hack' involves
-presenting a list of 11 words of identical length, and requiring the
-user to try to guess which one is correct.  When the player guesses an
-incorrect word, they are told how many letters their guess has in
-common in the same position (the 'likeness' score) with the correct
-answer word.  The player is allowed 4 guesses to solve the puzzle,
-although there may be opportunities to increase the number of guesses.
+presenting a list of up to 11 words of identical length, and requiring
+the user to try to guess which one is correct.  When the player
+guesses an incorrect word, they are told how many letters their guess
+has in common in the same position (the 'likeness' score) with the
+correct answer word.  The player is allowed 4 guesses to solve the
+puzzle, although there may be opportunities to increase the number of
+guesses.
 
 There are numerous other sites on the web that offer to help solve
 this challenge.  Most simply pick a word at random from the available
