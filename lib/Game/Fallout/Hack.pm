@@ -109,8 +109,9 @@ DESCRIPTION for a longer explanation.
  6 letter words: AVG=2.52  FAIL=112
  5 letter words: AVG=2.54  FAIL=498
 
-Note that the failure rates are roughly 1/10th of the failure rate of
-the similarity score method.
+Note that the failure rates are less than 1/10th of the failure rate
+of the similarity score method for 5 letter words, and closer to 1/100
+for 7 letter words.
 
 
 =head1 SUBROUTINES/METHODS
