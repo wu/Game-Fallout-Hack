@@ -7,11 +7,19 @@ use Test::More;
 use Fallout::Hack;
 
 #############################################################################
-
-# 7 letter words (previously 200+): GUESSES=25077 TESTS=10033  AVG=2.4994518090302  FAIL=0
-# 6 letter words (previously 300+): GUESSES=25270 TESTS=10033  AVG=2.5186883285159  FAIL=6
-# 5 letter words (previously 500+): GUESSES=25569 TESTS=10033  AVG=2.54848998305592  FAIL=52
-
+#
+# 7 letter words
+#   - after:  GUESSES=250670 TESTS=100039  AVG=2.50  FAIL=29
+#   - before: GUESSES=247883 TESTS=100016  AVG=2.47  FAIL=2343
+#
+# 6 letter words
+#   - after:  GUESSES=252486 TESTS=100041  AVG=2.52  FAIL=112
+#   - before: GUESSES=250464 TESTS=100016  AVG=2.50  FAIL=3363
+#
+# 5 letter words
+#   - after:  GUESSES=254769 TESTS=100041  AVG=2.54  FAIL=498
+#   - before: GUESSES=252954 TESTS=100015  AVG=2.52  FAIL=5136
+#
 #############################################################################
 
 # to enable randomly generated test cases, set this to the number of
@@ -172,3 +180,4 @@ same: died hits wars furs fork goes walk used holy same part
 chooses: reduced shelter thrower worried tonight erected strange turrets chooses hundred godlike
 armor: thugs notes cache board truth shady armor games slips speed catch
 retreated: sponsored increased processor violently wastelord clockwork secretive kidnapped delimiter retreated desperate
+expose: riches cattle limped figure rocket expose caught immune gained listed rifles
