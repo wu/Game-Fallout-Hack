@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use lib "lib/";
-use Fallout::Hack;
+use Game::Fallout::Hack;
 
 print "Enter words, one per line\n";
 
@@ -36,7 +36,7 @@ for my $guess ( 1, 2, 3, 4 ) {
 
     $guesses = $guess;
 
-    my $recommended = Fallout::Hack::full_guess_tree( $guess, @words );
+    my $recommended = Game::Fallout::Hack::recommend( $guess, @words );
 
     print "\nRecommended: $recommended\n";
 
@@ -55,7 +55,7 @@ for my $guess ( 1, 2, 3, 4 ) {
         warn "ERROR: enter the number of characters matched by $recommended\n";
     }
 
-    @words = Fallout::Hack::guess( \@words, $recommended, $num_letters );
+    @words = Game::Fallout::Hack::guess( \@words, $recommended, $num_letters );
     my $num_words = scalar @words;
 
     if ( $num_words == 1 ) {

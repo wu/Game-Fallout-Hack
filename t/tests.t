@@ -4,23 +4,7 @@ use warnings;
 
 use Test::More;
 
-use Fallout::Hack;
-
-#############################################################################
-#
-# 7 letter words
-#   - after:  GUESSES=250670 TESTS=100039  AVG=2.50  FAIL=29
-#   - before: GUESSES=247883 TESTS=100016  AVG=2.47  FAIL=2343
-#
-# 6 letter words
-#   - after:  GUESSES=252486 TESTS=100041  AVG=2.52  FAIL=112
-#   - before: GUESSES=250464 TESTS=100016  AVG=2.50  FAIL=3363
-#
-# 5 letter words
-#   - after:  GUESSES=254769 TESTS=100041  AVG=2.54  FAIL=498
-#   - before: GUESSES=252954 TESTS=100015  AVG=2.52  FAIL=5136
-#
-#############################################################################
+use Game::Fallout::Hack;
 
 # to enable randomly generated test cases, set this to the number of
 # random tests you want to generate
@@ -29,19 +13,19 @@ my $random_tests = 0;
 #############################################################################
 
 {
-    ok( Fallout::Hack::matches_string( 'a', 'a', 1 ),
+    ok( Game::Fallout::Hack::matches_string( 'a', 'a', 1 ),
         "Checking that string 'a' matches string 'a' in 1 position"
     );
 
-    ok( Fallout::Hack::matches_string( 'abc', 'abc', 3 ),
+    ok( Game::Fallout::Hack::matches_string( 'abc', 'abc', 3 ),
         "Checking that string 'abc' matches string 'abc' in 3 positions"
     );
 
-    ok( ! Fallout::Hack::matches_string( 'abc', 'abd', 3 ),
+    ok( ! Game::Fallout::Hack::matches_string( 'abc', 'abd', 3 ),
         "Checking that string 'abc' does not match string 'abd' in 3 positions"
     );
 
-    ok( Fallout::Hack::matches_string( 'wastes', 'insane', 1 ),
+    ok( Game::Fallout::Hack::matches_string( 'wastes', 'insane', 1 ),
         "Checking that string 'wastes' matches string 'insane' in 1 positions"
     );
 }
@@ -60,7 +44,7 @@ for my $line ( <DATA> ) {
 
 if ( $random_tests ) {
     print "Getting word list...\n";
-    my @all_words = split /\n/, `cat t/5_word_list`;
+    my @all_words = split /\n/, `cat t/7_word_list`;
     my $num_words = scalar @all_words;
     print "WORDS: num_words\n";
 
@@ -95,7 +79,7 @@ sub run_test {
         $total_guesses++;
 
         unless ( @recommended ) {
-            @recommended = Fallout::Hack::full_guess_tree( $count, @test_words );
+            @recommended = Game::Fallout::Hack::recommend( $count, @test_words );
         }
 
         my $recommended = shift @recommended;
@@ -112,19 +96,19 @@ sub run_test {
             last COUNT;
         }
 
-        my $match_count = Fallout::Hack::calculate_match_count( $recommended,
+        my $match_count = Game::Fallout::Hack::calculate_match_count( $recommended,
                                                                 $answer,
                                                             );
 
         my @new_test_words;
-        ok( @new_test_words = Fallout::Hack::guess( \@test_words, $recommended, $match_count ),
+        ok( @new_test_words = Game::Fallout::Hack::guess( \@test_words, $recommended, $match_count ),
             "Plugging the recommended word back into guess: $match_count matches: " . scalar @new_test_words . " left"
         );
 
         @test_words = @new_test_words;
     }
 
-    is( Fallout::Hack::full_guess_tree( 4, @test_words ),
+    is( Game::Fallout::Hack::recommend( 4, @test_words ),
         $answer,
         "Checking that final word was found: $answer"
     ) or $total_failures++;
@@ -181,3 +165,4 @@ chooses: reduced shelter thrower worried tonight erected strange turrets chooses
 armor: thugs notes cache board truth shady armor games slips speed catch
 retreated: sponsored increased processor violently wastelord clockwork secretive kidnapped delimiter retreated desperate
 expose: riches cattle limped figure rocket expose caught immune gained listed rifles
+village: greatly shotgun winning crushed ghengis mirrors sterile insults message involve village
