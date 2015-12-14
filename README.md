@@ -74,9 +74,6 @@ success rate.
 - 6 letter words: AVG=2.50  FAIL=3363
 - 5 letter words: AVG=2.52  FAIL=5136
 
-The failure rates here are roughly half of the failure rates of
-randomly generated answers.
-
 Simulation
 --------------
 
@@ -86,6 +83,3 @@ DESCRIPTION for a longer explanation.
 - 7 letter words: AVG=2.50  FAIL=29
 - 6 letter words: AVG=2.52  FAIL=112
 - 5 letter words: AVG=2.54  FAIL=498
-
-Note that the failure rates are roughly 1/10th of the failure rate of
-the similarity score method.
