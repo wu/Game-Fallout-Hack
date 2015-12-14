@@ -81,11 +81,6 @@ one at random.
  6 letter words: AVG=2.57  FAIL=6767
  5 letter words: AVG=2.59  FAIL=10671
 
-This strategy is equivalent to picking the first available valid
-choice if you were trying to work out the answer by hand, assuming
-that the words are randomly selected, and order is not relevant.
-
-
 =head2 Similarity Score
 
 This strategy scores each word based on the number of characters it
