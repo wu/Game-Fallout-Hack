@@ -6,7 +6,7 @@ use lib "lib/";
 use Game::Fallout::Hack;
 
 print "Enter words, white space delimited.\n";
-print "If necessary, enter a single '.' (period) after the final word.\n";
+print "If less than 11 words, enter a single '.' (period) after the final word.\n";
 
 my @orig_words;
 

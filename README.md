@@ -1,4 +1,5 @@
 DESCRIPTION
+==============
 
 The recent titles in the Fallout game series contains terminals that
 must be 'hacked' in order to gain access.  The 'hack' involves
@@ -31,6 +32,7 @@ then some feedback is given about the number of failure paths that
 remain.
 
 FITNESS
+==============
 
 In the process of crafting this algorithm, I generated random tests
 for words of various lengths.  Here is a comparison of 100k tests
@@ -46,6 +48,7 @@ Also note that as words length increases, the failure rate decreases.
 Longer words are easier to solve since more information is available.
 
 Random
+--------------
 
 This strategy looks at the available valid choices and simply picks
 one at random.
@@ -60,6 +63,7 @@ that the words are randomly selected, and order is not relevant.
 
 
 Similarity Score
+--------------
 
 This strategy scores each word based on the number of characters it
 has in the same position as other words.  The word with the highest
@@ -74,6 +78,7 @@ The failure rates here are roughly half of the failure rates of
 randomly generated answers.
 
 Simulation
+--------------
 
 This is the strategy employed by the current library.  See the
 DESCRIPTION for a longer explanation.
