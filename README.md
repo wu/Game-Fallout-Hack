@@ -53,9 +53,9 @@ Random
 This strategy looks at the available valid choices and simply picks
 one at random.
 
- 7 letter words: AVG=2.55  FAIL=4320
- 6 letter words: AVG=2.57  FAIL=6767
- 5 letter words: AVG=2.59  FAIL=10671
+- 7 letter words: AVG=2.55  FAIL=4320
+- 6 letter words: AVG=2.57  FAIL=6767
+- 5 letter words: AVG=2.59  FAIL=10671
 
 This strategy is equivalent to picking the first available valid
 choice if you were trying to work out the answer by hand, assuming
@@ -70,9 +70,9 @@ has in the same position as other words.  The word with the highest
 score provides the most information, and will produce the highest
 success rate.
 
- 7 letter words: AVG=2.47  FAIL=2343
- 6 letter words: AVG=2.50  FAIL=3363
- 5 letter words: AVG=2.52  FAIL=5136
+- 7 letter words: AVG=2.47  FAIL=2343
+- 6 letter words: AVG=2.50  FAIL=3363
+- 5 letter words: AVG=2.52  FAIL=5136
 
 The failure rates here are roughly half of the failure rates of
 randomly generated answers.
@@ -83,9 +83,9 @@ Simulation
 This is the strategy employed by the current library.  See the
 DESCRIPTION for a longer explanation.
 
- 7 letter words: AVG=2.50  FAIL=29
- 6 letter words: AVG=2.52  FAIL=112
- 5 letter words: AVG=2.54  FAIL=498
+- 7 letter words: AVG=2.50  FAIL=29
+- 6 letter words: AVG=2.52  FAIL=112
+- 5 letter words: AVG=2.54  FAIL=498
 
 Note that the failure rates are roughly 1/10th of the failure rate of
 the similarity score method.
